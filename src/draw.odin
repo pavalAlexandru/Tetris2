@@ -140,7 +140,36 @@ DrawPlaying :: proc(game: ^Game) {
 		}
 	}
 
+	DrawCurrentTetromino :: proc(game: ^Game) {
+		for i in 0 ..< 4 {
+			for j in 0 ..< 4 {
+				if game.currentTetromino.shape[i][j] != 0 {
+					rl.DrawTextureEx(
+						game.textures[game.currentTetromino.type],
+						rl.Vector2 {
+							f32(
+								CANVA_BLOCK * 4 +
+								game.currentTetromino.position.x * CANVA_BLOCK / 2 +
+								CANVA_BLOCK / 2 * j,
+							),
+							f32(
+								CANVA_BLOCK * 3 +
+								game.currentTetromino.position.y * CANVA_BLOCK / 2 +
+								CANVA_BLOCK / 2 * i,
+							),
+						},
+						0,
+						5,
+						rl.WHITE,
+					)
+
+				}
+			}
+		}
+	}
+
 	DrawBoard(game)
+	DrawCurrentTetromino(game)
 
 	rl.DrawText(
 		"Score: 3000",
@@ -155,6 +184,7 @@ DrawPlaying :: proc(game: ^Game) {
 		"Quit",
 	) {
 		game.currentState = .TITLE
+		ResetLevel(game)
 	}
 }
 
@@ -166,7 +196,6 @@ DRAW :: proc(game: ^Game) {
 	case .HELP:
 		DrawHelp(game)
 	case .PLAYING:
-		DrawPlaying(game)
 		DrawPlaying(game)
 	}
 }

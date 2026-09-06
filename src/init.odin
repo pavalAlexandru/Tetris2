@@ -48,9 +48,65 @@ Game :: struct {
 	exitSignal:       bool,
 	score:            int,
 	currentTetromino: Tetromino,
+	activeTetromino:  bool,
 	board:            [20][10]int,
 	textures:         [TetrominoType]rl.Texture2D,
 	frameTexture:     rl.Texture2D,
+	clock:            f32,
+	activeGame:       bool,
+}
+
+LoadAssets :: proc(game: ^Game) {
+	cyan_bytes := #load("../assets/cyan.png")
+	blue_bytes := #load("../assets/blue.png")
+	orange_bytes := #load("../assets/orange.png")
+	yellow_bytes := #load("../assets/yellow.png")
+	green_bytes := #load("../assets/green.png")
+	purple_bytes := #load("../assets/purple.png")
+	red_bytes := #load("../assets/red.png")
+
+	frame_bytes := #load("../assets/frame.png")
+
+	cyan_image := rl.LoadImageFromMemory(".png", raw_data(cyan_bytes), i32(len(cyan_bytes)))
+	blue_image := rl.LoadImageFromMemory(".png", raw_data(blue_bytes), i32(len(blue_bytes)))
+	orange_image := rl.LoadImageFromMemory(".png", raw_data(orange_bytes), i32(len(orange_bytes)))
+	yellow_image := rl.LoadImageFromMemory(".png", raw_data(yellow_bytes), i32(len(yellow_bytes)))
+	green_image := rl.LoadImageFromMemory(".png", raw_data(green_bytes), i32(len(green_bytes)))
+	purple_image := rl.LoadImageFromMemory(".png", raw_data(purple_bytes), i32(len(purple_bytes)))
+	red_image := rl.LoadImageFromMemory(".png", raw_data(red_bytes), i32(len(red_bytes)))
+
+	frame_image := rl.LoadImageFromMemory(".png", raw_data(frame_bytes), i32(len(frame_bytes)))
+
+	game.textures[.CYAN] = rl.LoadTextureFromImage(cyan_image)
+	game.textures[.BLUE] = rl.LoadTextureFromImage(blue_image)
+	game.textures[.ORANGE] = rl.LoadTextureFromImage(orange_image)
+	game.textures[.YELLOW] = rl.LoadTextureFromImage(yellow_image)
+	game.textures[.GREEN] = rl.LoadTextureFromImage(green_image)
+	game.textures[.PURPLE] = rl.LoadTextureFromImage(purple_image)
+	game.textures[.RED] = rl.LoadTextureFromImage(red_image)
+
+	game.frameTexture = rl.LoadTextureFromImage(frame_image)
+
+	rl.UnloadImage(cyan_image)
+	rl.UnloadImage(blue_image)
+	rl.UnloadImage(orange_image)
+	rl.UnloadImage(yellow_image)
+	rl.UnloadImage(green_image)
+	rl.UnloadImage(purple_image)
+	rl.UnloadImage(red_image)
+
+	rl.UnloadImage(frame_image)
+
+}
+
+ResetLevel :: proc(game: ^Game) {
+	game.score = 0
+	game.activeTetromino = false
+	for i in 0 ..< 20 {
+		for j in 0 ..< 10 {
+			game.board[i][j] = 0
+		}
+	}
 }
 
 INIT :: proc() -> (game: Game) {
@@ -60,25 +116,18 @@ INIT :: proc() -> (game: Game) {
 
 	game.currentState = .TITLE
 	game.exitSignal = false
+	game.activeTetromino = false
 
-	game.textures[.CYAN] = rl.LoadTexture("../assets/cyan.png")
-	game.textures[.BLUE] = rl.LoadTexture("../assets/blue.png")
-	game.textures[.ORANGE] = rl.LoadTexture("../assets/orange.png")
-	game.textures[.YELLOW] = rl.LoadTexture("../assets/yellow.png")
-	game.textures[.GREEN] = rl.LoadTexture("../assets/green.png")
-	game.textures[.PURPLE] = rl.LoadTexture("../assets/purple.png")
-	game.textures[.RED] = rl.LoadTexture("../assets/red.png")
+	LoadAssets(&game)
 
-	game.frameTexture = rl.LoadTexture("../assets/frame.png")
-
-	k := 0
-	for i in 0 ..< 20 {
-		for j in 0 ..< 10 {
-			game.board[i][j] = k
-			k += 1
-			k = k % 8
-		}
-	}
+	// k := 0
+	// for i in 0 ..< 20 {
+	// 	for j in 0 ..< 10 {
+	// 		game.board[i][j] = k
+	// 		k += 1
+	// 		k = k % 8
+	// 	}
+	// }
 
 	return game
 }

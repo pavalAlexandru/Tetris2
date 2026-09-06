@@ -15,12 +15,12 @@ main :: proc() {
 
 		rl.BeginDrawing()
 
-		rl.ClearBackground(rl.WHITE)
+		rl.ClearBackground(rl.SKYBLUE)
 
 		if dev {DrawDevGrid()}
 		if rl.IsKeyPressed(rl.KeyboardKey.ONE) {dev = !dev}
 
-
+		UPDATE(&game)
 		DRAW(&game)
 
 		rl.EndDrawing()
