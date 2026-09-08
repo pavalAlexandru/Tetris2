@@ -25,16 +25,6 @@ DrawTitle :: proc(game: ^Game) {
 		game.currentState = .HELP
 	}
 
-	rl.DrawText(
-		"High Scores:",
-		i32(CANVA_BLOCK * 10) + CANVA_BLOCK / 6,
-		i32(CANVA_BLOCK * 7) + CANVA_BLOCK / 5,
-		30,
-		rl.BLUE,
-	)
-
-	DrawMockData()
-
 	if rl.GuiButton(
 		rl.Rectangle{CANVA_BLOCK * 20, CANVA_BLOCK * 14, BUTTON_WIDTH, BUTTON_HEIGHT},
 		"Exit",

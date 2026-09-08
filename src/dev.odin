@@ -19,10 +19,3 @@ DrawDevGrid :: proc() {
 	}
 
 }
-
-DrawMockData :: proc() {
-	rl.DrawText("Andu", i32(CANVA_BLOCK * 10), i32(CANVA_BLOCK * 9), 20, rl.BLUE)
-	rl.DrawText("100000", i32(CANVA_BLOCK * 13), i32(CANVA_BLOCK * 9), 20, rl.BLUE)
-	rl.DrawText("GoldenApe", i32(CANVA_BLOCK * 10), i32(CANVA_BLOCK * 10), 20, rl.BLUE)
-	rl.DrawText("999", i32(CANVA_BLOCK * 13), i32(CANVA_BLOCK * 10), 20, rl.BLUE)
-}
